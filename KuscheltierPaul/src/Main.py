@@ -14,7 +14,6 @@ rFuss = HedgehogClient.get_digital(4)
 lOhr = HedgehogClient.get_digital(5)
 abbr = HedgehogClient.get_digital(6)
 notfall = HedgehogClient.get_digital(7)
-vibmotor = HedgehogClient.set_digital_output(8,True)
 
 conn = psycopg2.connect("dbname=paul user=Vinc password=Vinc")
 m = Medikamente(conn)
@@ -22,7 +21,7 @@ t = Termine(conn,rFuss)
 s = SimonSays(conn,rHand,lHand,rFuss,lFuss, abbr, notfall)
 b = Buecher(conn, rHand)
 p = Puls(lOhr)
-pwr = Power(vibmotor)
+pwr = Power()
 
 #def t():
     #pass

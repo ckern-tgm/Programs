@@ -1,4 +1,5 @@
 import psutil
+from hedgehog.client.sync_client import HedgehogClient
 
 class Power(object):
 
@@ -6,13 +7,8 @@ class Power(object):
     #plugged = battery.power_plugged
     percent = str(battery.percent)
 
-
-    def __init__(self, vibmotor):
-        pass
-        self.vibmotor = vibmotor
-
     def getPower(self):
         if self.battery.percent <= 20:
-            self.vibmotor
-
-
+            HedgehogClient.set_digital_output(8, True)
+        else:
+            HedgehogClient.set_digital_output(8,False)
