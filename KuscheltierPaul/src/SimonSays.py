@@ -9,13 +9,22 @@
 import random
 import time
 import pyttsx3
+import platform
+
 
 engine = pyttsx3.init()
 
 # Die Klasse implementiert das Spiel Simon Says. Das Spiel funktioniert wie folgt. Wenn eine Aktion aufgefordert wird, soll diese nur gemacht werden, wenn
 # die Worte "Simon sagt " vor der Aktion gesagt wurden.
 class SimonSays(object):
+	if (platform.system() == 'Windows'):
+		deutsch = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\eSpeak_3"
+		engine.setProperty('rate', 100)
+	else:
+		deutsch = "german"
+		engine.setProperty('rate', 140)
 
+	engine.setProperty('voice', deutsch)
 	# Hier werden die Variablen aus dem Parameter der Klasse initialisiert
 	def __init__(self, conn,rHand,lHand,rFuss,lFuss, abbr, notfall):
 		self.conn = conn
