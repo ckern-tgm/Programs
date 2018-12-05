@@ -1,5 +1,4 @@
 import psutil
-from hedgehog.client.sync_client import HedgehogClient
 
 # Startet den Vibrationsmotor, wenn der Akkustand unter 20% ist.
 class Power(object):
@@ -11,10 +10,11 @@ class Power(object):
     # wird der Vibrationsmotor wieder deaktiviert.
     def getPower(self):
         if self.battery.percent <= 20:
-            HedgehogClient.set_digital_output(8, True)
+            # Vibrationsmotor aktivieren
+            pass
         else:
-            HedgehogClient.set_digital_output(8,False)
-
+            # Vibrationsmotor deaktivieren
+            pass
 if __name__ == '__main__':
     p = Power()
     p.getPower()

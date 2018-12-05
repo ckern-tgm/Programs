@@ -7,6 +7,7 @@
 # @description: Teddy - the interactive Hedgehog teddy bear client
 #
 import random
+import time
 import pyttsx3
 
 engine = pyttsx3.init()
@@ -86,22 +87,24 @@ class SimonSays(object):
 			ausgabe = self.getAusgabe()
 			engine.say(ausgabe['ausgabe'])
 			engine.runAndWait()
+			tend = time.time()+5
+			while time.time() < tend:
+				if ausgabe['zahl'] <= 4 and self.parseInputs() > 0:
+					engine.say('Das war leider falsch.')
+					engine.runAndWait()
+					engine.say('Dein Score beträgt '+str(score))
+					engine.runAndWait()
 
-			if ausgabe['zahl'] <= 4 and self.parseInputs() > 0:
-				engine.say('Das war leider falsch.')
-				engine.runAndWait()
-				engine.say('Dein Score beträgt '+str(score))
-				engine.runAndWait()
+				elif (ausgabe['zahl'] <= 4) and (self.parseInputs() == 0):
+					engine.say('richtig.')
+					engine.runAndWait()
+				elif ausgabe['zahl'] == self.parseInputs():
+					engine.say('richtig')
+					engine.runAndWait()
+					score += 1
+				else:
+					self.falscheAusgabe(score)
 
-			elif (ausgabe['zahl'] <= 4) and (self.parseInputs() == 0):
-				engine.say('richtig.')
-				engine.runAndWait()
-			elif ausgabe['zahl'] == self.parseInputs():
-				engine.say('richtig')
-				engine.runAndWait()
-				score += 1
-			else:
-				self.falscheAusgabe(score)
 		cur = self.conn.cursor()
 		cur.execute("INSERT INTO score VALUES(%s)", (score,))
 		self.conn.commit
