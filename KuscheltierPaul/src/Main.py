@@ -1,13 +1,10 @@
-<<<<<<< HEAD
 from hedgehog.client.sync_client import HedgehogClient
 from hedgehog.client import connect
 from Medikamente import Medikamente
 from Termine import Termine
-=======
 from hedgehog.client import connect
 #from Medikamente import Medikamente
 #from Termine import Termine
->>>>>>> e9a695ae6cd09980cd69f7ec3a4b369659028b74
 from SimonSays import SimonSays
 #from Buecher import Buecher
 from Puls import Puls
