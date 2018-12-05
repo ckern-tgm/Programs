@@ -11,7 +11,11 @@ import pyttsx3
 
 engine = pyttsx3.init()
 
+# Die Klasse implementiert das Spiel Simon Says. Das Spiel funktioniert wie folgt. Wenn eine Aktion aufgefordert wird, soll diese nur gemacht werden, wenn
+# die Worte "Simon sagt " vor der Aktion gesagt wurden.
 class SimonSays(object):
+
+	# Hier werden die Variablen aus dem Parameter der Klasse initialisiert
 	def __init__(self, conn,rHand,lHand,rFuss,lFuss, abbr, notfall):
 		self.conn = conn
 		self.rHand = rHand
@@ -21,7 +25,7 @@ class SimonSays(object):
 		self.abbr = abbr
 		self.notfall = notfall
 
-
+	# Diese Methode gibt in zufälliger Reihenfolge die Ausgabe wieder.
 	def getAusgabe(self):
 		ausgabe = ""
 		zahl = random.randrange(1,9)
@@ -34,18 +38,22 @@ class SimonSays(object):
 		elif zahl == 4:
 			ausgabe = "Drücke meinen linken Fuß"
 		elif zahl == 5:
-			ausgabe = "Simon says drücke meine rechte Hand"
+			ausgabe = "Simon sagt drücke meine rechte Hand"
 		elif zahl == 6:
-			ausgabe = "Simon says drücke meine linke Hand"
+			ausgabe = "Simon sagt drücke meine linke Hand"
 		elif zahl == 7:
-			ausgabe = "Simon says drücke meinen rechten Fuß"
+			ausgabe = "Simon sagt drücke meinen rechten Fuß"
 		elif zahl == 8:
-			ausgabe = "Simon says drücke meinen linken Fuß"
+			ausgabe = "Simon sagt drücke meinen linken Fuß"
 		return {
 			"ausgabe": ausgabe,
 			"zahl": zahl
 		}
 
+
+	# Diese Methode identifiziert das Drücken der Knöpfe als Zahl. Wenn z.B. die rechte Hand gedrückt wird, dann wird die Zahl 5 zurück gegeben.
+	# Diese Methode wird dafür verwendet, um einen Knopfdruck mit der obig genannten Methode ab zu gleichen. Wenn die Zahl der parseInputs Methode
+	# der Zahl der getAusgabe Methode entspricht, ist der gedrückte Knopf richtig.
 	def parseInputs(self):
 		if self.rHand:
 			return 5
@@ -55,11 +63,21 @@ class SimonSays(object):
 			return 7
 		if self.lFuss:
 			return  8
+		return 0
 
 
 
 
 
+	def falscheAusgabe(self,score):
+			engine.say('Das war leider falsch.')
+			engine.runAndWait()
+			engine.say('Dein Score beträgt '+str(score))
+			engine.runAndWait()
+
+	# Diese Methode verwendet die obig genannten Methoden und generiert das Spiel Simon Says.
+	# Die Methode überprüft die Zahlen der Methode getAusgabe und vergleicht sie mit den Zahlen der Methode parseInputs
+	# Hier befindet sich die Logik des Spiels.
 	def getSimonSays(self):
 		engine.say("Sie haben das Spiel Simon Says gewählt")
 		engine.runAndWait()
@@ -69,14 +87,21 @@ class SimonSays(object):
 			engine.say(ausgabe['ausgabe'])
 			engine.runAndWait()
 
-			if ausgabe['zahl'] <= 4:
+			if ausgabe['zahl'] <= 4 and self.parseInputs() > 0:
 				engine.say('Das war leider falsch.')
 				engine.runAndWait()
 				engine.say('Dein Score beträgt '+str(score))
+				engine.runAndWait()
+
+			elif (ausgabe['zahl'] <= 4) and (self.parseInputs() == 0):
+				engine.say('richtig.')
+				engine.runAndWait()
 			elif ausgabe['zahl'] == self.parseInputs():
 				engine.say('richtig')
 				engine.runAndWait()
 				score += 1
+			else:
+				self.falscheAusgabe(score)
 		cur = self.conn.cursor()
 		cur.execute("INSERT INTO score VALUES(%s)", (score,))
 		self.conn.commit
