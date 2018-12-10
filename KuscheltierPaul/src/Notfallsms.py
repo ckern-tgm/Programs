@@ -14,17 +14,14 @@ class Notfallsms(object):
         self.tel = tel
 
     def sendSMS(self):
-        #sms = Sms('069917432505', 'Hilfe - Notfall', None)
+        #sms = Sms('069915482302', 'Hilfe - Notfall', None)
         modem = GsmModem(PORT, BAUDRATE, None, None, None)
-        modem.sendSms(self, self.tel, self.msg, True, 15) #meine nummer zum testen
+        modem.sendSms(self, self.tel, self.msg, True, 15)
 
     def main(self):
         print('Initializing modem...')
         logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
         modem = GsmModem(PORT, BAUDRATE, smsReceivedCallbackFunc=None)
         print('Sending SMS')
-        modem.sendSms(self, self.tel, self.msg, True, 15)  # meine nummer zum testen
+        modem.sendSms(self, self.tel, self.msg, True, 15)
         print('SMS sent')
-
-    if __name__ == '__main__':
-        main()
