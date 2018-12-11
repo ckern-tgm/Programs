@@ -11,6 +11,8 @@ import time
 import pyttsx3
 import platform
 
+from pynput import keyboard
+
 engine = pyttsx3.init()
 
 
@@ -102,24 +104,28 @@ class SimonSays(object):
             engine.say(ausgabe['ausgabe'])
             engine.runAndWait()
             tend = time.time() + 5
+
+            global input
+            input = ""
             while time.time() < tend:
                 #print(time)
-                if ausgabe['zahl'] <= 4 and self.parseInputs() > 0:
-                    engine.say('Das war leider falsch.')
-                    engine.runAndWait()
-                    engine.say('Dein Score beträgt ' + str(score))
-                    engine.runAndWait()
+                input = self.parseInputs()
+            if ausgabe['zahl'] <= 4 and input > 0:
+                engine.say('Das war leider falsch.')
+                engine.runAndWait()
+                engine.say('Dein Score beträgt ' + str(score))
+                engine.runAndWait()
 
-                elif (ausgabe['zahl'] <= 4) and (self.parseInputs() == 0):
-                    engine.say('richtig.')
-                    engine.runAndWait()
+            elif (ausgabe['zahl'] <= 4) and (input == 0):
+                engine.say('richtig.')
+                engine.runAndWait()
 
-                elif ausgabe['zahl'] == self.parseInputs():
-                    engine.say('richtig')
-                    engine.runAndWait()
-                    score += 1
-                else:
-                    self.falscheAusgabe(score)
+            elif ausgabe['zahl'] == input:
+                engine.say('richtig')
+                engine.runAndWait()
+                score += 1
+            else:
+                self.falscheAusgabe(score)
 
         cur = self.conn.cursor()
         cur.execute("INSERT INTO score VALUES(%s)", (score,))

@@ -2,10 +2,10 @@ import psycopg2
 from SimonSays import SimonSays
 from pynput import keyboard
 
-rHand = keyboard.Key.down
-lHand = keyboard.Key.up
-lFuss = keyboard.Key.pause
-rFuss = keyboard.Key.alt
+rHand = True
+lHand = False #keyboard.Key.up
+lFuss = False #keyboard.Key.pause
+rFuss = False
 lOhr = False
 pulsSanalog = False
 abbr = False
@@ -13,6 +13,7 @@ notfall = False
 
     # Hier wird die PostgreSQL Verbindung inizialisiert
 conn = psycopg2.connect("dbname=paul user=Vinc password=Vinc")
+
 
 class Main(object):
 
