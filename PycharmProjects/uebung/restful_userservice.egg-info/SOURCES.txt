@@ -1,0 +1,6 @@
+README.md
+setup.py
+restful_userservice.egg-info/PKG-INFO
+restful_userservice.egg-info/SOURCES.txt
+restful_userservice.egg-info/dependency_links.txt
+restful_userservice.egg-info/top_level.txt

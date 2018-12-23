@@ -1,0 +1,6 @@
+
+def HelloWorld():
+    print("Hello world")
+
+if __name__ == '__main__':
+    HelloWorld()
