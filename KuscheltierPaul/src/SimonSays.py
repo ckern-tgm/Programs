@@ -11,8 +11,6 @@ import time
 import pyttsx3
 import platform
 
-from pynput import keyboard
-
 engine = pyttsx3.init()
 
 
@@ -40,11 +38,11 @@ class SimonSays(object):
     # Hier werden die Variablen aus dem Parameter der Klasse initialisiert
     def __init__(self, conn, rHand, lHand, rFuss, lFuss, abbr, notfall):
         self.conn = conn
-        self.rHand = rHand
-        self.lHand = lHand
-        self.rFuss = rFuss
-        self.lFuss = lFuss
-        self.abbr = abbr
+        self.rHand = True
+        self.lHand = True
+        self.rFuss = True
+        self.lFuss = True
+        self.abbr = False
         self.notfall = notfall
 
     # Diese Methode gibt in zufälliger Reihenfolge die Ausgabe wieder.
