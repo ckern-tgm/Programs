@@ -47,13 +47,13 @@ class Main(object):
             self.notfall = hedgehog.get_digital(7)
 
     # Hier wird die PostgreSQL Verbindung inizialisiert
-        conn = psycopg2.connect("dbname=paul user=Vinc password=Vinc")
+        conn = psycopg2.connect("dbname=paul user=vinc password=vinc")
 
-    # Hier werden Objekte der benötigten Klassen erstellt
-        self.m = Medikamente(conn)
-        self.t = Termine(conn,self.rFuss)
+        # Hier werden Objekte der benötigten Klassen erstellt
+        #self.m = Medikamente(conn)
+        #self.t = Termine(conn,self.rFuss)
         self.s = SimonSays(conn,self.rHand,self.lHand,self.rFuss,self.lFuss, self.abbr, self.notfall)
-        self.b = Buecher(conn, self.rHand)
+        #self.b = Buecher(conn, self.rHand)
         self.p = Puls(self.lOhr, self.pulsSanalog)
         self.pwr = Power()
 
@@ -69,11 +69,13 @@ class Main(object):
             self.b.getBuecher()
         elif self.rFuss == True:
             self.t.getTermine()
-        self.p.getPuls()
+        elif self.lOhr == True:
+            self.p.getPuls()
         #thread = Process(target=f, args=('bob',))
         #thread.start()
         while True:
-            self.m.getMedikamente()
+            self.pwr.getPower()
+            #self.m.getMedikamente()
 
 
 

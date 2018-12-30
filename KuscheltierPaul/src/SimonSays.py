@@ -11,8 +11,6 @@ import time
 import pyttsx3
 import platform
 
-from pynput import keyboard
-
 engine = pyttsx3.init()
 
 
