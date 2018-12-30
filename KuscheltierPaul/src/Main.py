@@ -1,7 +1,8 @@
 from hedgehog.client.sync_client import HedgehogClient
 from hedgehog.client import connect
 from Medikamente import Medikamente
-from Termine import Termine
+from Termine import Termineo
+from Notfallsms import Notfallsms
 from hedgehog.client import connect
 #from Medikamente import Medikamente
 #from Termine import Termine
@@ -58,6 +59,7 @@ class Main(object):
     #b = Buecher(conn, rHand)
     p = Puls(lOhr, pulsSanalog)
     pwr = Power()
+    nsms = Notfallsms()
 
     #def thread():
         #pass
@@ -74,6 +76,8 @@ class Main(object):
         if self.lFuss == True:
             #self.t.getTermineToday()
             pass
+        if self.notfall == True:
+            self.nsms.sendSMS()
         self.p.getPuls()
         #thread = Process(target=f, args=('bob',))
         #thread.start()

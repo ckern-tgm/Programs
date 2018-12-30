@@ -26,17 +26,18 @@ class Power(object):
         engine.setProperty('volume', 20)
     engine.setProperty('voice', deutsch)
 
-    battery = psutil.sensors_battery()
-    #plugged = battery.power_plugged
-
     # Wenn der aktuelle Akkustand geringer als oder gleich 20% ist, dann wird der Vibrationsmotor gestartet. Wenn der Akkustand höher als 20% ist,
     # wird der Vibrationsmotor wieder deaktiviert.
     def getPower(self):
-        if self.battery.percent <= 20:
+
+        self.battery = psutil.sensors_battery()
+        self.plugged = self.battery.power_plugged
+        if self.plugged == False and self.battery.percent <= 20:
             engine.say("Lade mich bitte auf")
             engine.runAndWait()
         else:
-            pass
+            print("bla")
 if __name__ == '__main__':
     p = Power()
     p.getPower()
+
