@@ -16,7 +16,7 @@ class Puls(object):
     # Wird ausgeführt, wenn Sensor berührt wird und gestoppt, wenn sensor nicht mehr berührt wird
     def getPuls(self):
         while self.lOhr == True:
-            self.engine.say(self.pulsSanalog.get_analog())
+            self.engine.say(self.pulsSanalog)
             self.engine.runAndWait()
 
 
