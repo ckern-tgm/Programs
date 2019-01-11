@@ -44,7 +44,6 @@ class Medikamente(object):
         cur1.execute('SELECT name FROM medikamente WHERE %s = TRUE' % (Wochentag,))
         cur2.execute('SELECT zeit FROM medikamente WHERE %s = TRUE' % (Wochentag,))
         cur3.execute('SELECT anz FROM medikamente WHERE %s = TRUE' % (Wochentag,))
-        print("The number of Names,Zeit,Anz: ", cur1.rowcount, cur2.rowcount, cur3.rowcount)
 
         if (cur1.rowcount != cur2.rowcount or cur1.rowcount != cur3.rowcount or cur2.rowcount != cur3.rowcount):
             print("2nd time")

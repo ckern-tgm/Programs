@@ -29,7 +29,6 @@ class Power(object):
     # Wenn der aktuelle Akkustand geringer als oder gleich 20% ist, dann wird der Vibrationsmotor gestartet. Wenn der Akkustand höher als 20% ist,
     # wird der Vibrationsmotor wieder deaktiviert.
     def getPower(self):
-
         self.battery = psutil.sensors_battery()
         self.plugged = self.battery.power_plugged
         if self.plugged == False and self.battery.percent <= 20:
