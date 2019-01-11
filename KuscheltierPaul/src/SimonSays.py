@@ -36,14 +36,10 @@ class SimonSays(object):
     engine.setProperty('voice', deutsch)
 
     # Hier werden die Variablen aus dem Parameter der Klasse initialisiert
-    def __init__(self, conn, rHand, lHand, rFuss, lFuss, abbr, notfall):
+    def __init__(self, conn, sensorwerte):
         self.conn = conn
-        self.rHand = True
-        self.lHand = True
-        self.rFuss = True
-        self.lFuss = True
-        self.abbr = False
-        self.notfall = notfall
+        self.sensorwerte = sensorwerte
+
 
     # Diese Methode gibt in zufälliger Reihenfolge die Ausgabe wieder.
     def getAusgabe(self):
@@ -74,13 +70,13 @@ class SimonSays(object):
     # Diese Methode wird dafür verwendet, um einen Knopfdruck mit der obig genannten Methode ab zu gleichen. Wenn die Zahl der parseInputs Methode
     # der Zahl der getAusgabe Methode entspricht, ist der gedrückte Knopf richtig.
     def parseInputs(self):
-        if self.rHand:
+        if self.sensorwerte.rHand:
             return 5
-        if self.lHand:
+        if self.sensorwerte.lHand:
             return 6
-        if self.rFuss:
+        if self.sensorwerte.rFuss:
             return 7
-        if self.lFuss:
+        if self.sensorwerte.lFuss:
             return 8
         return 0
 
@@ -89,6 +85,12 @@ class SimonSays(object):
         engine.runAndWait()
         engine.say('Dein Score beträgt ' + str(score))
         engine.runAndWait()
+        
+    def richtigeAusgabe(self, score):
+        engine.say('richtig')
+        engine.runAndWait()
+        score += 1
+      
 
     # Diese Methode verwendet die obig genannten Methoden und generiert das Spiel Simon Says.
     # Die Methode überprüft die Zahlen der Methode getAusgabe und vergleicht sie mit den Zahlen der Methode parseInputs
@@ -97,7 +99,7 @@ class SimonSays(object):
         engine.say("Sie haben das Spiel Simon Sagt gewählt")
         engine.runAndWait()
         score = 0
-        while self.notfall == False and self.abbr == False:
+        while self.sensorwerte.notfall == True and self.sensorwerte.abbr == True:
             ausgabe = self.getAusgabe()
             engine.say(ausgabe['ausgabe'])
             engine.runAndWait()
@@ -105,25 +107,37 @@ class SimonSays(object):
 
             global input
             input = ""
-            while time.time() < tend:
+            
+            pressed_something = False
+            while time.time() < tend and self.sensorwerte == True and self.sensorwerte.abbr == True:
                 #print(time)
                 input = self.parseInputs()
-            if ausgabe['zahl'] <= 4 and input > 0:
-                engine.say('Das war leider falsch.')
-                engine.runAndWait()
-                engine.say('Dein Score beträgt ' + str(score))
-                engine.runAndWait()
 
-            elif (ausgabe['zahl'] <= 4) and (input == 0):
-                engine.say('richtig.')
-                engine.runAndWait()
+                # input obwohl simon says nicht gesagt wurde
+                if ausgabe['zahl'] <= 4 and input > 0:
+                    self.falscheAusgabe(score)
+                    pressed_something = True
+                    break
 
-            elif ausgabe['zahl'] == input:
-                engine.say('richtig')
-                engine.runAndWait()
-                score += 1
-            else:
+                # richtiger Knopf gedrückt, richtige Antwort
+                elif ausgabe['zahl'] == input:
+                    self.richtigeAusgabe(score)
+                    pressed_something = True
+                    break
+
+                # Er hat bei Simon Says gedrückt aber es war die falsche Hand
+                elif ausgabe['zahl'] > 4 and input != ausgabe['zahl']:
+                    self.falscheAusgabe(score)
+                    break
+
+            # Wenn etwas gedrückt werden soll aber nichts gedrückt wurde
+            if ausgabe['zahl'] > 4 and pressed_something == False:
                 self.falscheAusgabe(score)
+
+            #Wenn kein Simon Says gesagt wurde, richtige Antwort
+            if(ausgabe['zahl'] <= 4) and pressed_something == False:
+                self.richtigeAusgabe(score)
+
 
         cur = self.conn.cursor()
         cur.execute("INSERT INTO score VALUES(%s)", (score,))
