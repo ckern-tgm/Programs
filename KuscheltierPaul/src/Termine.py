@@ -44,11 +44,11 @@ class Termine(object):
     def __init__(self, conn):
         self.conn = conn
 
-    def refreshTermineHeute(self,conn):
-        cur1 = conn.cursor()
-        cur2 = conn.cursor()
-        cur3 = conn.cursor()
-        cur4 = conn.cursor()
+    def refreshTermineHeute(self):
+        cur1 = self.conn.cursor()
+        cur2 = self.conn.cursor()
+        cur3 = self.conn.cursor()
+        cur4 = self.conn.cursor()
         # cur1.execute("SELECT datum FROM Termine WHERE datum = '2018-11-07';")
         # cur1.execute('SELECT datum FROM Termine WHERE datum = %s' & ("2018-11-07",))
         # cur1.execute('SELECT datum FROM Termine WHERE datum = %s' % ("2018-11-07",))
@@ -104,11 +104,11 @@ class Termine(object):
         self.ListeZuAusgabeListe()
 
 
-    def refresh24(self,conn):
-        cur1 = conn.cursor()
-        cur2 = conn.cursor()
-        cur3 = conn.cursor()
-        cur4 = conn.cursor()
+    def refresh24(self):
+        cur1 = self.conn.cursor()
+        cur2 = self.conn.cursor()
+        cur3 = self.conn.cursor()
+        cur4 = self.conn.cursor()
         # cur1.execute("SELECT datum FROM Termine WHERE datum = '2018-11-07';")
         # cur1.execute('SELECT datum FROM Termine WHERE datum = %s' & ("2018-11-07",))
         # cur1.execute('SELECT datum FROM Termine WHERE datum = %s' % ("2018-11-07",))
@@ -158,11 +158,11 @@ class Termine(object):
         cur4.close()
 
 
-    def refresh2(self,conn):
-        cur1 = conn.cursor()
-        cur2 = conn.cursor()
-        cur3 = conn.cursor()
-        cur4 = conn.cursor()
+    def refresh2(self):
+        cur1 = self.conn.cursor()
+        cur2 = self.conn.cursor()
+        cur3 = self.conn.cursor()
+        cur4 = self.conn.cursor()
         # cur1.execute("SELECT datum FROM Termine WHERE datum = '2018-11-07';")
         # cur1.execute('SELECT datum FROM Termine WHERE datum = %s' & ("2018-11-07",))
         # cur1.execute('SELECT datum FROM Termine WHERE datum = %s' % ("2018-11-07",))
@@ -212,7 +212,7 @@ class Termine(object):
         cur4.close()
 
 
-    def getTermine(self):
+    def getTermineWrong(self):
         return 0
 
 
@@ -387,25 +387,31 @@ class Termine(object):
             return 0
 
     def getTermine(self):
-        t.refresh2(conn1)
+        t.refresh2()
         print("Termine 2:")
         print(t.termine2)
         t.ausgabeAlle2()
 
-        t.refresh24(conn1)
+        t.refresh24()
         print("Termine 24:")
         print(t.termine24)
         t.ausgabeAlle24()
+
+    def getTermineHeute(self):
+        self.refreshTermineHeute()
+        self.ausgabeAlleTermine()
 
 if __name__ == "__main__":
     conn1 = psycopg2.connect("dbname=paul user=Vinc password=Vinc")
     t = Termine(conn1)
 
-    t.refreshTermineHeute(conn1)
+    t.getTermineHeute()
+
+    #t.refreshTermineHeute()
     # while True:
     #   refreshTermine(conn1)
     #    TermineMain()
-    t.ausgabeAlleTermine()
+    #t.ausgabeAlleTermine()
 
     while True:
         t.getTermine()
