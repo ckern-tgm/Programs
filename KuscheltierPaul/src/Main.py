@@ -66,8 +66,8 @@ class Main(object):
                 self.b.getBuecher()
 
             if self.sensorwerte.lFuss == False:
-                #self.t.getTermineToday()
-                pass
+                self.t.getTermineToday()
+                
             if self.sensorwerte.notfall == False:
                 pass
                 #self.nsms.sendSMS()
