@@ -17,5 +17,6 @@ class Puls(object):
         while self.sensorwerte.lOhr == True:
             self.engine.say(self.sensorwerte.pulsAnalog)
             self.engine.runAndWait()
+        print (self.sensorwerte.pulsAnalog)
 
 

@@ -71,7 +71,7 @@ class Main(object):
             if self.sensorwerte.notfall == False:
                 pass
                 #self.nsms.sendSMS()
-            if self.sensorwerte.lOhr == False:
+            if self.sensorwerte.rFuss == False:
                 self.p.getPuls()
         #self.pwr.getPower()
             self.m.getMedikamente()
