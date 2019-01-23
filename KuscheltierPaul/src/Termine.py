@@ -228,6 +228,7 @@ class Termine(object):
     def ausgabeTermineJetzt(self,index):
 
 
+
         if (index == 0):
             self.engine.say("Du hast heute")
             self.engine.runAndWait()
