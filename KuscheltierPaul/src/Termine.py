@@ -227,6 +227,7 @@ class Termine(object):
 
     def ausgabeTermineJetzt(self,index):
 
+
         if (index == 0):
             self.engine.say("Du hast heute")
             self.engine.runAndWait()
@@ -332,8 +333,15 @@ class Termine(object):
 
 
     def ausgabeAlleTermine(self):
-        for i, val in enumerate(self.termine):
-            self.ausgabeTermineJetzt(i)
+        if len(self.termine)==0:
+            print("Keine heutigen Termine")
+            self.engine.say("Du hast heute keine Termine")
+            self.engine.runAndWait()
+        else:
+
+            for i, val in enumerate(self.termine):
+                self.ausgabeTermineJetzt(i)
+
 
 
     def ausgabeAlle24(self):

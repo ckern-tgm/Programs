@@ -46,7 +46,6 @@ class Medikamente(object):
         cur3.execute('SELECT anz FROM medikamente WHERE %s = TRUE' % (Wochentag,))
 
         if (cur1.rowcount != cur2.rowcount or cur1.rowcount != cur3.rowcount or cur2.rowcount != cur3.rowcount):
-            print("2nd time")
             cur1.execute('SELECT name FROM medikamente WHERE %s = TRUE' % (Wochentag,))
             cur2.execute('SELECT zeit FROM medikamente WHERE %s = TRUE' % (Wochentag,))
             cur3.execute('SELECT anz FROM medikamente WHERE %s = TRUE' % (Wochentag,))
@@ -86,34 +85,25 @@ class Medikamente(object):
         self.anzahl.pop(position)
 
     def ausgabeMedikamente(self,time):
-        print("Ausgabe")
 
-        print("Hallo, ich bin es, Paul, es ist")
         self.engine.say("Hallo, ich bin es, Paul, es ist")
         self.engine.runAndWait()
 
         self.engine.say(Replace.replaceUhrzeit(time))
         self.engine.runAndWait()
-        print("[" + Replace.replaceUhrzeit(self.uhrzeitenAusgabe[0]) + "] " + time)
         # uhrzeiten.pop(0)
 
         self.engine.say("und du musst das Medikament")
         self.engine.runAndWait()
-        print("und du musst das Medikament")
 
         self.engine.say(self.medikamenteAusgabe[0])
         self.engine.runAndWait()
-        print(self.medikamenteAusgabe[0])
-        # print(medikamente.pop(0))
 
         self.engine.say(self.anzahlAusgabe[0])
         self.engine.runAndWait()
-        # print(anzahl.pop(0))
-        print(self.anzahlAusgabe[0])
 
         self.engine.say("mal nehmen")
         self.engine.runAndWait()
-        print("mal nehmen")
 
     def ListeZuAusgabeListe(self):
         global deleteIndexes
@@ -121,7 +111,6 @@ class Medikamente(object):
 
         for i, val in enumerate(self.uhrzeiten):
             if (self.uhrzeiten[i] == timefile.getTimeHHMM()):
-                print("IN IF")
                 self.medikamenteAusgabe.append(self.medikamente[i])
                 self.uhrzeitenAusgabe.append(self.uhrzeiten[i])
                 self.anzahlAusgabe.append(self.anzahl[i])
@@ -139,8 +128,6 @@ class Medikamente(object):
     def MedikamenteMain(self):
         # refreshMedikamente(conn1)
         self.ListeZuAusgabeListe()
-        print("Alle Medikamente" + str(self.medikamente))
-        print("Ausgabe Medikamente" + str(self.medikamenteAusgabe))
         # refreshMedikamente()
         # print("Alle Medikamente" + str(medikamente))
         # print("Ausgabe Medikamente" + str(medikamenteAusgabe))
@@ -154,7 +141,7 @@ class Medikamente(object):
 
 
 if __name__ == '__main__':
-    conn1 = psycopg2.connect("dbname=paul user=Vinc password=Vinc")
+    conn1 = psycopg2.connect("dbname=paul user=vinc password=vinc")
     m = Medikamente(conn1)
     while True:
         m.getMedikamente()

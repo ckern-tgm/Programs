@@ -2,7 +2,7 @@
 from hedgehog.client import connect
 from Sensorwerte import Sensorwerte
 from Medikamente import Medikamente
-#from Termine import Termine
+from Termine import Termine
 #from Notfallsms import Notfallsms
 from hedgehog.client import connect
 from SimonSays import SimonSays
@@ -12,6 +12,7 @@ import psycopg2
 from Power import Power
 import pyttsx3
 import platform
+import time
 
 engine = pyttsx3.init()
 
@@ -45,37 +46,51 @@ class Main(object):
 
     # Hier werden Objekte der benötigten Klassen erstellt
     m = Medikamente(conn)
-    #t = Termine(conn,sensorwerte)
+    t = Termine(conn)
     s = SimonSays(conn,sensorwerte)
     #b = Buecher(conn, sensorwerte)
     p = Puls(sensorwerte)
     
     #pwr = Power()
     #nsms = Notfallsms()
+    def getTimeButtonPressed(self):
+        tanfang = time.time() + 1
+        tend = time.time() + 8
+        if self.sensorwerte.notfall == True:
+            if self.sensorwerte.notfall == False and time.time() >= self.tanfang and time.time() <= tend:
+                return True
+            else:
+                return False
 
     # Die Methode ruft alle benötigten Funktionen der Klassen auf
     def callFunctions(self):
 
-        engine.say("Wenn Sie Bücher hören wollen, drücken Sie meinen rechten Arm. Wenn Sie Simon Says spielen wollen, drücken Sie meine linken Arm. Wenn Sie die heutigen Termine hören wollen, drücken Sie meinen linken Fuß. Wenn Sie Ihren Puls messen wollen, legen Sie ihren Finger auf mein rechtes Ohr.")
-        engine.runAndWait()
+        #engine.say("Wenn Sie Bücher hören wollen, drücken Sie meinen rechten Arm. Wenn Sie Simon Says spielen wollen, drücken Sie meine linken Arm. Wenn Sie die heutigen Termine hören wollen, drücken Sie meinen linken Fuß. Wenn Sie Ihren Puls messen wollen, legen Sie ihren Finger auf mein rechtes Ohr.")
+        #engine.runAndWait()
+        print("Program started")
+
         while True:
+            print(self.getTimeButtonPressed())
             if self.sensorwerte.rHand == False:
                 self.s.getSimonSays()
 
             if self.sensorwerte.lHand == False:
                 self.b.getBuecher()
 
-            if self.sensorwerte.lFuss == False:
-                self.t.getTermineToday()
-                
-            if self.sensorwerte.notfall == False:
-                pass
-                #self.nsms.sendSMS()
             if self.sensorwerte.rFuss == False:
+                self.t.getTermineHeute()
+            
+            if self.sensorwerte.notfall == True and self.getTimeButtonPressed() == True:
+                engine.say("Notfall")
+                engine.runAndWait()
+                print("Notfall")
+                #self.nsms.sendSMS()
+
+            if self.sensorwerte.lFuss == False:
                 self.p.getPuls()
-        #self.pwr.getPower()
+
             self.m.getMedikamente()
-            #self.t.getTermine()
+            self.t.getTermine()
 
 if __name__ == '__main__':
     m = Main()
