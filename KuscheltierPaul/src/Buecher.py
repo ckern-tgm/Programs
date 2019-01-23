@@ -31,7 +31,7 @@ class Buecher(object):
     else:
         deutsch = "german"
         engine.setProperty('rate', 140)
-        Directory = "D:/Diplomarbeit/Github/Kuscheltier/Teddy/books/Brueder_Grimm/"
+        Directory = "/books/Brueder_Grimm/"
 
     engine.setProperty('voice', deutsch)
 
