@@ -99,7 +99,6 @@ class Termine(object):
         for row in row4:
             self.hinweis.append(row[0])
 
-        print(self.termine)
 
         self.ListeZuAusgabeListe()
 
@@ -227,111 +226,85 @@ class Termine(object):
         self.hinweis.pop(position)
 
     def ausgabeTermineJetzt(self,index):
-        print("Ausgabe")
 
         if (index == 0):
-            print("Du hast heute")
             self.engine.say("Du hast heute")
             self.engine.runAndWait()
 
-            print(len(self.termine))
             self.engine.say(str(len(self.termine)))
             self.engine.runAndWait()
 
-            print("Termine")
             self.engine.say("Termine")
             self.engine.runAndWait()
 
         else:
-            print("Dein " + str(index + 1) + "ter Termin lautet")
             self.engine.say("Dein " + str(index + 1) + "ter Termin lautet")
             self.engine.runAndWait()
 
-        print("Um")
         self.engine.say("Um")
         self.engine.runAndWait()
 
-        print(Replace.replaceUhrzeit(self.uhrzeiten[index]))
         self.engine.say(Replace.replaceUhrzeit(self.uhrzeiten[index]))
         self.engine.runAndWait()
 
-        print("musst du in")
         self.engine.say("musst du in")
         self.engine.runAndWait()
 
-        print(self.ort[index])
         self.engine.say(self.ort[index])
         self.engine.runAndWait()
 
-        print("sein")
         self.engine.say("sein")
         self.engine.runAndWait()
 
-        print("Deine Beschreibung zu diesem Termin ist")
         self.engine.say("Deine Beschreibung zu diesem Termin ist")
         self.engine.runAndWait()
 
-        print(self.hinweis[index])
         self.engine.say(self.hinweis[index])
         self.engine.runAndWait()
 
 
     def ausgabe24(self,index):
-        print("Morgen, um")
         self.engine.say("Morgen, um")
         self.engine.runAndWait()
 
-        print(Replace.replaceUhrzeit(self.uhrzeiten24[index]))
         self.engine.say(Replace.replaceUhrzeit(self.uhrzeiten24[index]))
         self.engine.runAndWait()
 
-        print("musst du in")
         self.engine.say("musst du in")
         self.engine.runAndWait()
 
-        print(self.ort24[index])
         self.engine.say(self.ort24[index])
         self.engine.runAndWait()
 
-        print("sein")
         self.engine.say("sein")
         self.engine.runAndWait()
 
-        print("Deine Beschreibung zu diesem Termin ist")
         self.engine.say("Deine Beschreibung zu diesem Termin ist")
         self.engine.runAndWait()
 
-        print(self.hinweis24[index])
         self.engine.say(self.hinweis24[index])
         self.engine.runAndWait()
 
 
     def ausgabe2(self,index):
-        print("Um")
         self.engine.say("Um")
         self.engine.runAndWait()
 
-        print(Replace.replaceUhrzeit(self.uhrzeiten2[index]))
         self.engine.say(Replace.replaceUhrzeit(self.uhrzeiten2[index]))
         self.engine.runAndWait()
 
-        print("musst du in")
         self.engine.say("musst du in")
         self.engine.runAndWait()
 
-        print(self.ort2[index])
         self.engine.say(self.ort2[index])
         self.engine.runAndWait()
 
-        print("sein")
         self.engine.say("sein")
         self.engine.runAndWait()
 
-        print("Deine Beschreibung zu diesem Termin ist")
         self.engine.say("Deine Beschreibung zu diesem Termin ist")
         self.engine.runAndWait()
 
-        print(self.hinweis2[index])
         self.engine.say(self.hinweis2[index])
         self.engine.runAndWait()
 
@@ -342,7 +315,6 @@ class Termine(object):
 
         for i, val in enumerate(self.uhrzeiten):
             if (self.uhrzeiten[i] == timefile.getTimeHHMM()):
-                print("IN IF")
                 self.termineAusgabe.append(self.termine[i])
                 self.uhrzeitenAusgabe.append(self.uhrzeiten[i])
                 self.ortAusgabe.append(self.ort[i])
@@ -377,8 +349,6 @@ class Termine(object):
     def TermineMain(self):
         # refreshTermine(conn1)
         self.ListeZuAusgabeListe()
-        print("Alle Termine" + str(self.termine))
-        print("Ausgabe Termine" + str(self.termineAusgabe))
         # refreshMedikamente()
         # print("Alle Termine" + str(termine))
         # print("Ausgabe Termine" + str(termineAusgabe))
@@ -387,25 +357,22 @@ class Termine(object):
             return 0
 
     def getTermine(self):
-        t.refresh2()
-        print("Termine 2:")
-        print(t.termine2)
-        t.ausgabeAlle2()
+        self.refresh2()
+        self.ausgabeAlle2()
 
-        t.refresh24()
-        print("Termine 24:")
-        print(t.termine24)
-        t.ausgabeAlle24()
+        self.refresh24()
+        self.ausgabeAlle24()
 
     def getTermineHeute(self):
         self.refreshTermineHeute()
         self.ausgabeAlleTermine()
 
 if __name__ == "__main__":
-    conn1 = psycopg2.connect("dbname=paul user=Vinc password=Vinc")
+    conn1 = psycopg2.connect("dbname=paul user=vinc password=vinc")
     t = Termine(conn1)
 
     t.getTermineHeute()
+    print(t.getTermineHeute())
 
     #t.refreshTermineHeute()
     # while True:
