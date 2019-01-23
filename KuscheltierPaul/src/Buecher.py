@@ -223,9 +223,9 @@ class Buecher(object):
         engine.say("Keine Hörbücher mehr übrig. Bitte auf der Webseite neue Hörbücher auswählen.")
         engine.runAndWait()
 
-    def getBuecher(self,conn,index):
-        self.selectBuch(conn)
-        self.playSong(index)
+    def getBuecher(self):
+        self.selectBuch(self.conn)
+        self.playSong(0)
 
 if __name__ == "__main__":
     conn1 = psycopg2.connect("dbname=paul user=Vinc password=Vinc")
