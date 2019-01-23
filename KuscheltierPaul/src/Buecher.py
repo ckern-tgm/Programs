@@ -6,7 +6,8 @@ import time
 import keyboard
 import pyttsx3
 
-Directory = "D:/Diplomarbeit/Github/Kuscheltier/Teddy/books/Brueder_Grimm/"
+Directory = ""
+
 # name = ['Rotkaeppchen', 'Rapunzel', 'Froschkoenig', 'Aschenputtel', 'Gestiefelter_Kater', 'Bremer_Stadtmusikanten', 'Haensel_und_Gretel', 'Goldene_Gans', 'Wilhelm_Tell']
 name = []
 autor = []
@@ -14,7 +15,7 @@ genre = []
 pausiert = []
 pygame.mixer.init()
 FilesPlayed = 0
-conn1 = psycopg2.connect("dbname=paul user=Vinc password=Vinc")
+#conn1 = psycopg2.connect("dbname=paul user=Vinc password=Vinc")
 engine = pyttsx3.init()
 
 
@@ -25,9 +26,12 @@ class Buecher(object):
     if (platform.system() == 'Windows'):
         deutsch = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\eSpeak_3"
         engine.setProperty('rate', 100)
+
+        Directory = "D:/Diplomarbeit/Github/Kuscheltier/Teddy/books/Brueder_Grimm/"
     else:
         deutsch = "german"
         engine.setProperty('rate', 140)
+        Directory = "/books/Brueder_Grimm/"
 
     engine.setProperty('voice', deutsch)
 
@@ -219,7 +223,9 @@ class Buecher(object):
         engine.say("Keine Hörbücher mehr übrig. Bitte auf der Webseite neue Hörbücher auswählen.")
         engine.runAndWait()
 
-
+    def getBuecher(self,conn,index):
+        self.selectBuch(conn)
+        self.playSong(index)
 
 if __name__ == "__main__":
     conn1 = psycopg2.connect("dbname=paul user=Vinc password=Vinc")
