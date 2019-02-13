@@ -71,6 +71,7 @@ class Main(object):
         print("Program started")
 
         while True:
+            
             if self.sensorwerte.rHand == False:
                 self.s.getSimonSays()
 
