@@ -14,10 +14,9 @@ class Puls(object):
     # Der Thread für das Unterbrechen der Methode muss noch implementiert werden.
     # Wird ausgeführt, wenn Sensor berührt wird und gestoppt, wenn sensor nicht mehr berührt wird
     def getPuls(self):
-        puls = [self.sensorwerte.pulsAnalog]
         while self.sensorwerte.abbr == True:
-            #Thread(target=self.abbrechen).start()
-            self.engine.say(self.sensorwerte.pulsAnalog)
+            #Thread(target=self.abbrechen()).start()
+            self.engine.say(self.sensorwerte.pulsAnalog/50)
             self.engine.runAndWait()
         self.engine.say("Pulsmessen wurde beendet")
         self.engine.runAndWait()

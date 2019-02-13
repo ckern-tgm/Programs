@@ -1,4 +1,4 @@
-#import alsaaudio
+
 import platform
 import pygame
 from pygame.locals import *
@@ -7,9 +7,7 @@ import time
 import keyboard
 import pyttsx3
 
-global Directory
-Directory = "/home/pi/Programs/KuscheltierPaul/books/Brueder_Grimm/"
-
+Directory = ""
 
 # name = ['Rotkaeppchen', 'Rapunzel', 'Froschkoenig', 'Aschenputtel', 'Gestiefelter_Kater', 'Bremer_Stadtmusikanten', 'Haensel_und_Gretel', 'Goldene_Gans', 'Wilhelm_Tell']
 name = []
@@ -20,9 +18,7 @@ pygame.mixer.init()
 FilesPlayed = 0
 #conn1 = psycopg2.connect("dbname=paul user=Vinc password=Vinc")
 engine = pyttsx3.init()
-#m = alsaaudio.Mixer()
-#vol = m.getVolume()
-#print(vol)
+
 
 
 
@@ -34,9 +30,9 @@ class Buecher(object):
 
         Directory = "D:/Diplomarbeit/Github/Kuscheltier/Teddy/books/Brueder_Grimm/"
     else:
-        deutsch = "mb-de2"
-        engine.setProperty('rate', 100)
-        Directory = "/home/pi/Programs/KuscheltierPaul/books/Brueder_Grimm"
+        deutsch = "german"
+        engine.setProperty('rate', 140)
+        Directory = "/books/Brueder_Grimm/"
 
     engine.setProperty('voice', deutsch)
 
@@ -207,8 +203,6 @@ class Buecher(object):
 
         #skip = False
 
-        print("In Play Song")
-
         for x in range(index,len(name)):
 
             for y in range(1):
@@ -217,20 +211,15 @@ class Buecher(object):
 
                 time5 = time.time()+5
                 while time.time()<time5:
-                    print(str(time5))
-                    print(str(time.time()))
-                    print("In while")
                     if self.sensorwerte.rHand == False:
-                        print("rechte hand break")
                         #skip=True
                         break
                     elif self.sensorwerte.lHand == False:
-                        print(Directory+name[x]+".mp3")
                         pygame.mixer.music.load(Directory + name[x] + ".mp3")
                         pygame.mixer.music.play(1, pausiert[x])
-                        self.busy(self.conn, x)
+                        self.busy(conn1, x)
                         #skip = False
-                    elif self.sensorwerte.abbr == False:
+                    elif self.sensorwerte.abbr:
                         exit()
 
                 #if skip:

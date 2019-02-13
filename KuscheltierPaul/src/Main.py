@@ -6,7 +6,7 @@ from Termine import Termine
 #from Notfallsms import Notfallsms
 from hedgehog.client import connect
 from SimonSays import SimonSays
-#from Buecher import Buecher
+from Buecher import Buecher
 from Puls import Puls
 import psycopg2
 from Power import Power
@@ -33,9 +33,10 @@ class Main(object):
         deutsch = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\eSpeak_3"
         engine.setProperty('rate', 100)
     else:
-        deutsch = "german"
-        engine.setProperty('rate', 140)
-        engine.setProperty('volume', 20)
+        deutsch = "mb-de2"
+        engine.setProperty('rate', 100)
+    
+    engine.setProperty('volume', 30)
     engine.setProperty('voice', deutsch)
     
     
@@ -48,29 +49,28 @@ class Main(object):
     m = Medikamente(conn)
     t = Termine(conn)
     s = SimonSays(conn,sensorwerte)
-    #b = Buecher(conn, sensorwerte)
+    b = Buecher(conn, sensorwerte)
     p = Puls(sensorwerte)
     
     #pwr = Power()
     #nsms = Notfallsms()
     def getTimeButtonPressed(self):
-        tanfang = time.time() + 1
-        tend = time.time() + 8
-        if self.sensorwerte.notfall == True:
-            if self.sensorwerte.notfall == False and time.time() >= self.tanfang and time.time() <= tend:
+        tanfang = time.time() + 2
+        while True:
+            if self.sensorwerte.notfall == True and time.time() > tanfang:
+                self.sensorwerte.notfall = False
                 return True
-            else:
-                return False
 
     # Die Methode ruft alle benötigten Funktionen der Klassen auf
     def callFunctions(self):
+        engine.say("Hallo ich bin Paul")
+        engine.runAndWait()
 
         #engine.say("Wenn Sie Bücher hören wollen, drücken Sie meinen rechten Arm. Wenn Sie Simon Says spielen wollen, drücken Sie meine linken Arm. Wenn Sie die heutigen Termine hören wollen, drücken Sie meinen linken Fuß. Wenn Sie Ihren Puls messen wollen, legen Sie ihren Finger auf mein rechtes Ohr.")
         #engine.runAndWait()
         print("Program started")
 
         while True:
-            print(self.getTimeButtonPressed())
             if self.sensorwerte.rHand == False:
                 self.s.getSimonSays()
 
@@ -81,9 +81,8 @@ class Main(object):
                 self.t.getTermineHeute()
             
             if self.sensorwerte.notfall == True and self.getTimeButtonPressed() == True:
-                engine.say("Notfall")
+                engine.say("Das Notfallsignal wurde gesendet")
                 engine.runAndWait()
-                print("Notfall")
                 #self.nsms.sendSMS()
 
             if self.sensorwerte.lFuss == False:
@@ -95,6 +94,7 @@ class Main(object):
 if __name__ == '__main__':
     m = Main()
     m.callFunctions()
+    m.getTimeButtonPressed()
 
 
 

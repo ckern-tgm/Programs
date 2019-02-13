@@ -99,7 +99,7 @@ class SimonSays(object):
         engine.runAndWait()
         self.score = 0
 
-        while self.sensorwerte.notfall == True and self.sensorwerte.abbr == True:
+        while self.sensorwerte.notfall == False and self.sensorwerte.abbr == True:
             ausgabe = self.getAusgabe()
             engine.say(ausgabe['ausgabe'])
             engine.runAndWait()

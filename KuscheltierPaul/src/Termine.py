@@ -15,8 +15,8 @@ class Termine(object):
         deutsch = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\eSpeak_3"
         engine.setProperty('rate', 100)
     else:
-        deutsch = "german"
-        engine.setProperty('rate', 140)
+        deutsch = "mb-de2"
+        engine.setProperty('rate', 100)
 
     engine.setProperty('voice', deutsch)
 
