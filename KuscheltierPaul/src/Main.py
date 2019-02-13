@@ -24,19 +24,10 @@ class Main(object):
         deutsch = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\eSpeak_3"
         engine.setProperty('rate', 100)
     else:
-        deutsch = "german"
-        engine.setProperty('rate', 140)
-
-    engine.setProperty('voice', deutsch)
-
-    if (platform.system() == 'Windows'):
-        deutsch = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\eSpeak_3"
-        engine.setProperty('rate', 100)
-    else:
         deutsch = "mb-de2"
         engine.setProperty('rate', 100)
-    
-    engine.setProperty('volume', 30)
+
+    engine.setProperty('volume', 20)
     engine.setProperty('voice', deutsch)
     
     
