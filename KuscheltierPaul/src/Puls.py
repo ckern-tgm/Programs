@@ -1,10 +1,20 @@
 import pyttsx3
 from threading import Thread
 from Sensorwerte import Sensorwerte
+import platform
 
 # Liefert den Puls zurück
 class Puls(object):
     engine = pyttsx3.init()
+
+    if (platform.system() == 'Windows'):
+        deutsch = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\eSpeak_3"
+        engine.setProperty('rate', 100)
+    else:
+        deutsch = "mb-de2"
+        engine.setProperty('rate', 100)
+
+    engine.setProperty('voice', deutsch)
 
     #Init Methode zum Setzen der Werte, die man von den Parametern der Klasse bekommt
     def __init__(self,sensorwerte):
