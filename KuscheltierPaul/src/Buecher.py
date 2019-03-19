@@ -40,6 +40,7 @@ class Buecher(object):
 
     engine.setProperty('voice', deutsch)
 
+    engine.setProperty('volume', 0.6)
 
 
 # Hier werden die Variablen aus dem Parameter der Klasse initialisiert
@@ -207,11 +208,17 @@ class Buecher(object):
 
         #skip = False
 
+        global abbr
+        abbr = False
+
         print("In Play Song")
 
         for x in range(index,len(name)):
-
+            if abbr:
+                break
             for y in range(1):
+                if abbr:
+                    break
                 engine.say("Wollen sie das Hörbuch" + str(name[x]) + "hören?")
                 engine.runAndWait()
 
@@ -231,12 +238,18 @@ class Buecher(object):
                         self.busy(self.conn, x)
                         #skip = False
                     elif self.sensorwerte.abbr == False:
-                        exit()
+                        abbr = True
+                        break
 
                 #if skip:
                     #break
-        engine.say("Keine Hörbücher mehr übrig. Bitte auf der Webseite neue Hörbücher auswählen.")
-        engine.runAndWait()
+        if abbr==False:
+            engine.say("Keine Hörbücher mehr übrig. Bitte auf der Webseite neue Hörbücher auswählen.")
+            engine.runAndWait()
+        else:
+            abbr=False
+            engine.say("Hörbuch vorlesen wurde beendet.")
+            engine.runAndWait()
 
     def getBuecher(self):
         print("Vor select Buch")

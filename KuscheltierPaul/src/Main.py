@@ -27,7 +27,7 @@ class Main(object):
         deutsch = "mb-de2"
         engine.setProperty('rate', 100)
 
-    engine.setProperty('volume', 20)
+    engine.setProperty('volume', 1)
     engine.setProperty('voice', deutsch)
     
     

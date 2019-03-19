@@ -20,6 +20,9 @@ class Termine(object):
 
     engine.setProperty('voice', deutsch)
 
+    engine.setProperty('volume', 1)
+
+
     # global medikamente,uhrzeiten,anzahl,medikamenteAusgabe,uhrzeitenAusgabe,anzahlAusgabe
     termine = []
     uhrzeiten = []

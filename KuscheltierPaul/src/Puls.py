@@ -26,6 +26,8 @@ class Puls(object):
     def getPuls(self):
         while self.sensorwerte.abbr == True:
             #Thread(target=self.abbrechen()).start()
+            self.engine.say("Pulsmessen wurde gestartet")
+            engine.rundAndWait()
             self.engine.say(self.sensorwerte.pulsAnalog/50)
             self.engine.runAndWait()
         self.engine.say("Pulsmessen wurde beendet")

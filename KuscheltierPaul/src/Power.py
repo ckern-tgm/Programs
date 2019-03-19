@@ -18,6 +18,9 @@ class Power(object):
 
     engine.setProperty('voice', deutsch)
 
+    engine.setProperty('volume', 1)
+
+
     def __init__(self, Sensorwerte):
         self.sensorwerte = Sensorwerte()
 

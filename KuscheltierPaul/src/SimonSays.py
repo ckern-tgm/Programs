@@ -26,6 +26,9 @@ class SimonSays(object):
 
     engine.setProperty('voice', deutsch)
 
+    engine.setProperty('volume', 10)
+
+
     # Hier werden die Variablen aus dem Parameter der Klasse initialisiert
     def __init__(self, conn, sensorwerte):
         self.conn = conn

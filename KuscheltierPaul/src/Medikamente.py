@@ -17,6 +17,9 @@ class Medikamente(object):
 
     engine.setProperty('voice', deutsch)
 
+    engine.setProperty('volume', 1)
+
+
     medikamente = []
     uhrzeiten = []
     anzahl = []
