@@ -3,6 +3,8 @@ from threading import Thread
 from Sensorwerte import Sensorwerte
 import platform
 
+Englisch = True
+
 # Liefert den Puls zurück
 class Puls(object):
     engine = pyttsx3.init()
@@ -14,7 +16,12 @@ class Puls(object):
         deutsch = "mb-de2"
         engine.setProperty('rate', 100)
 
-    engine.setProperty('voice', deutsch)
+    englisch = "mb-en1"
+
+    if (Englisch == True):
+        engine.setProperty('voice', englisch)
+    else:
+        engine.setProperty('voice', deutsch)
 
     #Init Methode zum Setzen der Werte, die man von den Parametern der Klasse bekommt
     def __init__(self,sensorwerte):
@@ -26,16 +33,25 @@ class Puls(object):
     def getPuls(self):
         while self.sensorwerte.abbr == True:
             #Thread(target=self.abbrechen()).start()
-            self.engine.say("Pulsmessen wurde gestartet")
-            engine.rundAndWait()
+            if (Englisch == True):
+                self.engine.say("Heart rate measuring has started")
+            else:
+                self.engine.say("Pulsmessen wurde gestartet")
+            self.engine.runAndWait()
             self.engine.say(self.sensorwerte.pulsAnalog/50)
             self.engine.runAndWait()
-        self.engine.say("Pulsmessen wurde beendet")
+        if (Englisch == True):
+            self.engine.say("Heart rate measuring has stopped")
+        else:
+            self.engine.say("Pulsmessen wurde beendet")
         self.engine.runAndWait()
 
     def abbrechen(self):
         if self.sensorwerte.abbr == False:
-            self.engine.say("Pulsmessen wurde beendet")
+            if (Englisch == True):
+                self.engine.say("Heart measuring has ended")
+            else:
+                self.engine.say("Pulsmessen wurde beendet")
             self.engine.runAndWait()
 
 if __name__ == '__main__':

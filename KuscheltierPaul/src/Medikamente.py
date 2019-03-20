@@ -4,9 +4,12 @@ import platform
 import Replace
 import psycopg2
 
+Englisch = True
+
 # Liefert den Puls zurück
 class Medikamente(object):
     engine = pyttsx3.init()
+
 
     if (platform.system() == 'Windows'):
         deutsch = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\eSpeak_3"
@@ -15,7 +18,12 @@ class Medikamente(object):
         deutsch = "mb-de2"
         engine.setProperty('rate', 100)
 
-    engine.setProperty('voice', deutsch)
+    englisch = "mb-en1"
+
+    if (Englisch == True):
+        engine.setProperty('voice', englisch)
+    else:
+        engine.setProperty('voice', deutsch)
 
     engine.setProperty('volume', 1)
 
@@ -89,14 +97,20 @@ class Medikamente(object):
 
     def ausgabeMedikamente(self,time):
 
-        self.engine.say("Hallo, ich bin es, Paul, es ist")
+        if (Englisch == True):
+            self.engine.say("Hello, it's me, Paul. It is")
+        else:
+            self.engine.say("Hallo, ich bin es, Paul, es ist")
         self.engine.runAndWait()
 
         self.engine.say(Replace.replaceUhrzeit(time))
         self.engine.runAndWait()
         # uhrzeiten.pop(0)
 
-        self.engine.say("und du musst das Medikament")
+        if (Englisch == True):
+            self.engine.say("and you have to take the medication")
+        else:
+            self.engine.say("und du musst das Medikament")
         self.engine.runAndWait()
 
         self.engine.say(self.medikamenteAusgabe[0])
@@ -105,7 +119,10 @@ class Medikamente(object):
         self.engine.say(self.anzahlAusgabe[0])
         self.engine.runAndWait()
 
-        self.engine.say("mal nehmen")
+        if (Englisch == True):
+            self.engine.say("times")
+        else:
+            self.engine.say("mal nehmen")
         self.engine.runAndWait()
 
     def ListeZuAusgabeListe(self):

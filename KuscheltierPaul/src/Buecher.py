@@ -24,7 +24,7 @@ engine = pyttsx3.init()
 #vol = m.getVolume()
 #print(vol)
 
-
+Englisch = True
 
 class Buecher(object):
 
@@ -38,9 +38,14 @@ class Buecher(object):
         engine.setProperty('rate', 100)
         Directory = "/home/pi/Programs/KuscheltierPaul/books/Brueder_Grimm"
 
-    engine.setProperty('voice', deutsch)
+    englisch = "mb-en1"
 
-    engine.setProperty('volume', 0.6)
+    if (Englisch == True):
+        engine.setProperty('voice', englisch)
+    else:
+        engine.setProperty('voice', deutsch)
+
+    engine.setProperty('volume', 1)
 
 
 # Hier werden die Variablen aus dem Parameter der Klasse initialisiert
@@ -219,7 +224,10 @@ class Buecher(object):
             for y in range(1):
                 if abbr:
                     break
-                engine.say("Wollen sie das Hörbuch" + str(name[x]) + "hören?")
+                if (Englisch == True):
+                    engine.say("Do you want to listen to" + str(name[x]))
+                else:
+                    engine.say("Wollen sie das Hörbuch" + str(name[x]) + "hören?")
                 engine.runAndWait()
 
                 time5 = time.time()+5
@@ -244,11 +252,17 @@ class Buecher(object):
                 #if skip:
                     #break
         if abbr==False:
-            engine.say("Keine Hörbücher mehr übrig. Bitte auf der Webseite neue Hörbücher auswählen.")
+            if (Englisch == True):
+                engine.say("No books available. Please choose more books on the website.")
+            else:
+                engine.say("Keine Hörbücher mehr übrig. Bitte auf der Webseite neue Hörbücher auswählen.")
             engine.runAndWait()
         else:
             abbr=False
-            engine.say("Hörbuch vorlesen wurde beendet.")
+            if (Englisch == True):
+                engine.say("Book listening has ended")
+            else:
+                engine.say("Hörbuch vorlesen wurde beendet.")
             engine.runAndWait()
 
     def getBuecher(self):

@@ -13,6 +13,7 @@ import platform
 
 engine = pyttsx3.init()
 
+Englisch = True
 
 # Die Klasse implementiert das Spiel Simon Says. Das Spiel funktioniert wie folgt. Wenn eine Aktion aufgefordert wird, soll diese nur gemacht werden, wenn
 # die Worte "Simon sagt " vor der Aktion gesagt wurden.
@@ -24,9 +25,14 @@ class SimonSays(object):
         deutsch = "mb-de2"
         engine.setProperty('rate', 100)
 
-    engine.setProperty('voice', deutsch)
+    englisch = "mb-en1"
 
-    engine.setProperty('volume', 10)
+    if (Englisch == True):
+        engine.setProperty('voice', englisch)
+    else:
+        engine.setProperty('voice', deutsch)
+
+    engine.setProperty('volume', 1)
 
 
     # Hier werden die Variablen aus dem Parameter der Klasse initialisiert
@@ -60,6 +66,32 @@ class SimonSays(object):
             "zahl": zahl
         }
 
+    # Diese Methode gibt in zufälliger Reihenfolge die Ausgabe wieder.
+    def getAusgabeEnglisch(self):
+        ausgabe = ""
+        zahl = random.randrange(1, 9)
+        if zahl == 1:
+            ausgabe = "Press my right hand"
+        elif zahl == 2:
+            ausgabe = "Press my left hand"
+        elif zahl == 3:
+            ausgabe = "Press my right food"
+        elif zahl == 4:
+            ausgabe = "Press my left food"
+        elif zahl == 5:
+            ausgabe = "Simon says press my right hand"
+        elif zahl == 6:
+            ausgabe = "Simon says press my left hand"
+        elif zahl == 7:
+            ausgabe = "Simon says press my right food"
+        elif zahl == 8:
+            ausgabe = "Simon says press my left food"
+        return {
+            "ausgabe": ausgabe,
+            "zahl": zahl
+            }
+
+
     # Diese Methode identifiziert das Drücken der Knöpfe als Zahl. Wenn z.B. die rechte Hand gedrückt wird, dann wird die Zahl 5 zurück gegeben.
     # Diese Methode wird dafür verwendet, um einen Knopfdruck mit der obig genannten Methode ab zu gleichen. Wenn die Zahl der parseInputs Methode
     # der Zahl der getAusgabe Methode entspricht, ist der gedrückte Knopf richtig.
@@ -75,13 +107,22 @@ class SimonSays(object):
         return 0
 
     def falscheAusgabe(self,score):
-        engine.say('Das war leider falsch.')
+        if (Englisch == True):
+            engine.say('This was wrong')
+        else:
+            engine.say('Das war leider falsch.')
         engine.runAndWait()
-        engine.say('Du hast ' + str(score) + 'Punkte erreicht')
+        if (Englisch == True):
+            engine.say('You have' + str(score) + 'Points')
+        else:
+            engine.say('Du hast ' + str(score) + 'Punkte erreicht')
         engine.runAndWait()
         
     def richtigeAusgabe(self):
-        engine.say('richtig')
+        if (Englisch == True):
+            engine.say('correct')
+        else:
+            engine.say('richtig')
         engine.runAndWait()
       
 
@@ -89,12 +130,18 @@ class SimonSays(object):
     # Die Methode überprüft die Zahlen der Methode getAusgabe und vergleicht sie mit den Zahlen der Methode parseInputs
     # Hier befindet sich die Logik des Spiels.
     def getSimonSays(self):
-        engine.say("Sie haben das Spiel Simon Sagt gewählt")
+        if (Englisch == True):
+            engine.say("You have chosen the game Simon Says")
+        else:
+            engine.say("Sie haben das Spiel Simon Sagt gewählt")
         engine.runAndWait()
         self.score = 0
 
         while self.sensorwerte.notfall == False and self.sensorwerte.abbr == True:
-            ausgabe = self.getAusgabe()
+            if (Englisch == True):
+                ausgabe = self.getAusgabeEnglisch()
+            else:
+                ausgabe = self.getAusgabe()
             engine.say(ausgabe['ausgabe'])
             engine.runAndWait()
             tend = time.time() + 3
@@ -132,7 +179,10 @@ class SimonSays(object):
                     break
 
             if self.sensorwerte.abbr == False:
-                engine.say('Das Spiel wurde beendet')
+                if (Englisch == True):
+                    engine.say('The game has been stopped')
+                else:
+                    engine.say('Das Spiel wurde beendet')
                 engine.runAndWait()
                 break
 

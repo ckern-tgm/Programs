@@ -16,7 +16,7 @@ import time
 
 engine = pyttsx3.init()
 
-
+Englisch = True
 
 # Die Main Klasse ist die, die alle Klassen zusammen bringt und deren Funktionen verwendet. Hier befinden sich alle Funktionen des Kuscheltiers.
 class Main(object):
@@ -28,7 +28,12 @@ class Main(object):
         engine.setProperty('rate', 100)
 
     engine.setProperty('volume', 1)
-    engine.setProperty('voice', deutsch)
+    englisch = "mb-en1"
+
+    if (Englisch == True):
+        engine.setProperty('voice', englisch)
+    else:
+        engine.setProperty('voice', deutsch)
     
     
     sensorwerte = Sensorwerte()
@@ -54,7 +59,10 @@ class Main(object):
 
     # Die Methode ruft alle benötigten Funktionen der Klassen auf
     def callFunctions(self):
-        engine.say("Hallo ich bin Paul")
+        if (Englisch == True):
+            engine.say("Hello. I am Paul.")
+        else:
+            engine.say("Hallo ich bin Paul")
         engine.runAndWait()
 
         #engine.say("Wenn Sie Bücher hören wollen, drücken Sie meinen rechten Arm. Wenn Sie Simon Says spielen wollen, drücken Sie meine linken Arm. Wenn Sie die heutigen Termine hören wollen, drücken Sie meinen linken Fuß. Wenn Sie Ihren Puls messen wollen, legen Sie ihren Finger auf mein rechtes Ohr.")
@@ -73,7 +81,10 @@ class Main(object):
                 self.t.getTermineHeute()
             
             if self.sensorwerte.notfall == True and self.getTimeButtonPressed() == True:
-                engine.say("Das Notfallsignal wurde gesendet")
+                if (Englisch == True):
+                    engine.say("The emergency signal has been sent")
+                else:
+                    engine.say("Das Notfallsignal wurde gesendet")
                 engine.runAndWait()
                 #self.nsms.sendSMS()
 

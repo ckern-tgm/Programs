@@ -7,6 +7,8 @@ import Replace
 import time
 import psycopg2
 
+Englisch = True
+
 class Termine(object):
 
     engine = pyttsx3.init()
@@ -18,7 +20,12 @@ class Termine(object):
         deutsch = "mb-de2"
         engine.setProperty('rate', 100)
 
-    engine.setProperty('voice', deutsch)
+    englisch = "mb-en1"
+
+    if (Englisch == True):
+        engine.setProperty('voice', englisch)
+    else:
+        engine.setProperty('voice', deutsch)
 
     engine.setProperty('volume', 1)
 
@@ -233,35 +240,56 @@ class Termine(object):
 
 
         if (index == 0):
-            self.engine.say("Du hast heute")
+            if (Englisch == True):
+                self.engine.say("You have")
+            else:
+                self.engine.say("Du hast heute")
             self.engine.runAndWait()
 
             self.engine.say(str(len(self.termine)))
             self.engine.runAndWait()
 
-            self.engine.say("Termine")
+            if (Englisch == True):
+                self.engine.say("appointments")
+            else:
+                self.engine.say("Termine")
             self.engine.runAndWait()
 
         else:
-            self.engine.say("Dein " + str(index + 1) + "ter Termin lautet")
+            if (Englisch == True):
+                self.engine.say("Your" + str(index+1)+ "appointment is")
+            else:
+                self.engine.say("Dein " + str(index + 1) + "ter Termin lautet")
             self.engine.runAndWait()
 
-        self.engine.say("Um")
+        if (Englisch == True):
+            self.engine.say("At")
+        else:
+            self.engine.say("Um")
         self.engine.runAndWait()
 
         self.engine.say(Replace.replaceUhrzeit(self.uhrzeiten[index]))
         self.engine.runAndWait()
 
-        self.engine.say("musst du in")
+        if (Englisch == True):
+            self.engine.say("you have to be at")
+        else:
+            self.engine.say("musst du in")
         self.engine.runAndWait()
 
         self.engine.say(self.ort[index])
         self.engine.runAndWait()
 
-        self.engine.say("sein")
+        if (Englisch == True):
+            self.engine.say("")
+        else:
+            self.engine.say("sein")
         self.engine.runAndWait()
 
-        self.engine.say("Deine Beschreibung zu diesem Termin ist")
+        if (Englisch == True):
+            self.engine.say("Your description is")
+        else:
+            self.engine.say("Deine Beschreibung zu diesem Termin ist")
         self.engine.runAndWait()
 
         self.engine.say(self.hinweis[index])
@@ -269,22 +297,34 @@ class Termine(object):
 
 
     def ausgabe24(self,index):
-        self.engine.say("Morgen, um")
+        if (Englisch == True):
+            self.engine.say("Tomorrow at")
+        else:
+            self.engine.say("Morgen, um")
         self.engine.runAndWait()
 
         self.engine.say(Replace.replaceUhrzeit(self.uhrzeiten24[index]))
         self.engine.runAndWait()
 
-        self.engine.say("musst du in")
+        if (Englisch == True):
+            self.engine.say("you have to be at")
+        else:
+            self.engine.say("musst du in")
         self.engine.runAndWait()
 
         self.engine.say(self.ort24[index])
         self.engine.runAndWait()
 
-        self.engine.say("sein")
+        if (Englisch == True):
+            self.engine.say("")
+        else:
+            self.engine.say("sein")
         self.engine.runAndWait()
 
-        self.engine.say("Deine Beschreibung zu diesem Termin ist")
+        if (Englisch == True):
+            self.engine.say("Your description is")
+        else:
+            self.engine.say("Deine Beschreibung zu diesem Termin ist")
         self.engine.runAndWait()
 
         self.engine.say(self.hinweis24[index])
@@ -292,22 +332,34 @@ class Termine(object):
 
 
     def ausgabe2(self,index):
-        self.engine.say("Um")
+        if (Englisch == True):
+            self.engine.say("At")
+        else:
+            self.engine.say("Um")
         self.engine.runAndWait()
 
         self.engine.say(Replace.replaceUhrzeit(self.uhrzeiten2[index]))
         self.engine.runAndWait()
 
-        self.engine.say("musst du in")
+        if (Englisch == True):
+            self.engine.say("you have to be at")
+        else:
+            self.engine.say("musst du in")
         self.engine.runAndWait()
 
         self.engine.say(self.ort2[index])
         self.engine.runAndWait()
 
-        self.engine.say("sein")
+        if (Englisch == True):
+            self.engine.say("")
+        else:
+            self.engine.say("sein")
         self.engine.runAndWait()
 
-        self.engine.say("Deine Beschreibung zu diesem Termin ist")
+        if (Englisch == True):
+            self.engine.say("Your description is")
+        else:
+            self.engine.say("Deine Beschreibung zu diesem Termin ist")
         self.engine.runAndWait()
 
         self.engine.say(self.hinweis2[index])
@@ -339,7 +391,10 @@ class Termine(object):
     def ausgabeAlleTermine(self):
         if len(self.termine)==0:
             print("Keine heutigen Termine")
-            self.engine.say("Du hast heute keine Termine")
+            if (Englisch == True):
+                self.engine.say("You dont have any appointments")
+            else:
+                self.engine.say("Du hast heute keine Termine")
             self.engine.runAndWait()
         else:
 

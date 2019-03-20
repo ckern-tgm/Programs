@@ -4,7 +4,7 @@ import platform
 import time
 
 engine = pyttsx3.init()
-
+Englisch = True
 
 # Startet den Vibrationsmotor, wenn der Akkustand unter 20% ist.
 class Power(object):
@@ -14,9 +14,15 @@ class Power(object):
         engine.setProperty('rate', 100)
     else:
         deutsch = "mb-de2"
+
         engine.setProperty('rate', 100)
 
-    engine.setProperty('voice', deutsch)
+    englisch = "mb-en1"
+
+    if(Englisch==True):
+        engine.setProperty('voice', englisch)
+    else:
+        engine.setProperty('voice', deutsch)
 
     engine.setProperty('volume', 1)
 
@@ -28,7 +34,10 @@ class Power(object):
     # wird der Vibrationsmotor wieder deaktiviert.
     def getPower(self):
         if self.sensorwerte.akku <= 362:
-            engine.say('Bitte lade mich auf')
+            if(Englisch==True):
+                engine.say('Please load me')
+            else:
+                engine.say('Bitte lade mich auf')
             engine.runAndWait()
             time.sleep(5)
 
