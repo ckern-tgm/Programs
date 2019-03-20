@@ -17,7 +17,7 @@ class Power(object):
 
         engine.setProperty('rate', 100)
 
-    englisch = "mb-en1"
+    englisch = "english"
 
     if(Englisch==True):
         engine.setProperty('voice', englisch)

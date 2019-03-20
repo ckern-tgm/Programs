@@ -38,7 +38,7 @@ class Buecher(object):
         engine.setProperty('rate', 100)
         Directory = "/home/pi/Programs/KuscheltierPaul/books/Brueder_Grimm"
 
-    englisch = "mb-en1"
+    englisch = "english"
 
     if (Englisch == True):
         engine.setProperty('voice', englisch)

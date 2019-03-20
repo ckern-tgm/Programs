@@ -28,7 +28,7 @@ class Main(object):
         engine.setProperty('rate', 100)
 
     engine.setProperty('volume', 1)
-    englisch = "mb-en1"
+    englisch = "english"
 
     if (Englisch == True):
         engine.setProperty('voice', englisch)
