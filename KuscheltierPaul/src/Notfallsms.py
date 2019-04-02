@@ -46,3 +46,8 @@ class Notfallsms(object):
         }
 
         sm.SendSMS(msg)
+
+
+if __name__ == '__main__':
+    n = Notfallsms
+    n.sendNotfall()
