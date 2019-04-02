@@ -237,8 +237,6 @@ class Termine(object):
 
     def ausgabeTermineJetzt(self,index):
 
-
-
         if (index == 0):
             if (Englisch == True):
                 self.engine.say("You have")

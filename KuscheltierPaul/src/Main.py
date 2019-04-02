@@ -3,7 +3,7 @@ from hedgehog.client import connect
 from Sensorwerte import Sensorwerte
 from Medikamente import Medikamente
 from Termine import Termine
-#from Notfallsms import Notfallsms
+from Notfallsms import Notfallsms
 from hedgehog.client import connect
 from SimonSays import SimonSays
 from Buecher import Buecher
@@ -47,6 +47,7 @@ class Main(object):
     s = SimonSays(conn,sensorwerte)
     b = Buecher(conn, sensorwerte)
     p = Puls(sensorwerte)
+    n = Notfallsms(conn)
     
     #pwr = Power()
     #nsms = Notfallsms()
@@ -81,8 +82,10 @@ class Main(object):
                 self.t.getTermineHeute()
             
             if self.sensorwerte.notfall == True and self.getTimeButtonPressed() == True:
+                self.n.sendNotfall()
                 if (Englisch == True):
                     engine.say("The emergency signal has been sent")
+
                 else:
                     engine.say("Das Notfallsignal wurde gesendet")
                 engine.runAndWait()

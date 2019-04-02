@@ -33,13 +33,12 @@ class SimonSays(object):
         engine.setProperty('voice', deutsch)
 
     engine.setProperty('volume', 1)
-
+    
 
     # Hier werden die Variablen aus dem Parameter der Klasse initialisiert
     def __init__(self, conn, sensorwerte):
         self.conn = conn
         self.sensorwerte = sensorwerte
-
 
     # Diese Methode gibt in zufälliger Reihenfolge die Ausgabe wieder.
     def getAusgabe(self):
@@ -65,6 +64,7 @@ class SimonSays(object):
             "ausgabe": ausgabe,
             "zahl": zahl
         }
+
 
     # Diese Methode gibt in zufälliger Reihenfolge die Ausgabe wieder.
     def getAusgabeEnglisch(self):
