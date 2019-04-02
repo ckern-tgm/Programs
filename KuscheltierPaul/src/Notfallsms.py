@@ -1,4 +1,5 @@
 import gammu
+import psycopg2
 
 class Notfallsms(object):
 
@@ -49,5 +50,7 @@ class Notfallsms(object):
 
 
 if __name__ == '__main__':
-    n = Notfallsms()
+    conn1 = psycopg2.connect("dbname=paul user=vinc password=vinc")
+    n = Notfallsms(conn1)
     n.sendNotfall()
+    
