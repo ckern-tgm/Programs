@@ -15,7 +15,7 @@ class Notfallsms(object):
         cur3 = self.conn.cursor()
         SQLName = 'SELECT name FROM kuscheltiernutzer'
         SQLAdr = 'SELECT adresse FROM kuscheltiernutzer'
-        SQLTel = 'SELECT tel FROM kuscheltiernutzer'
+        SQLTel = 'SELECT tel FROM notfallkontakt'
         cur1.execute(SQLName, )
         cur2.execute(SQLAdr, )
         cur3.execute(SQLTel, )
