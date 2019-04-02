@@ -49,5 +49,5 @@ class Notfallsms(object):
 
 
 if __name__ == '__main__':
-    n = Notfallsms
+    n = Notfallsms()
     n.sendNotfall()
