@@ -1,27 +1,19 @@
-#from __future__ import print_function
-import logging
-from gsmmodem.modem import GsmModem
-#from gsmmodem.modem import Sms
-
-PORT = '/dev/ttyUSB2' #port bei hedgehog angeben
-BAUDRATE = 115200
-PIN = None # SIM card PIN (if any)
-
+import gammu
 
 class Notfallsms(object):
-    def __init__(self, msg, tel):
-        self.msg = msg
-        self.tel = tel
 
-    def sendSMS(self):
-        #sms = Sms('069915482302', 'Hilfe - Notfall', None)
-        modem = GsmModem(PORT, BAUDRATE, None, None, None)
-        modem.sendSms(self, self.tel, self.msg, True, 15)
+    def __init__(self, conn):
+        self.conn = conn
 
-    def main(self):
-        print('Initializing modem...')
-        logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
-        modem = GsmModem(PORT, BAUDRATE, smsReceivedCallbackFunc=None)
-        print('Sending SMS')
-        modem.sendSms(self, self.tel, self.msg, True, 15)
-        print('SMS sent')
+    def sendNotfall(self, name, adresse, nr):
+        sm = gammu.StateMachine()
+        sm.ReadConfig()
+        sm.Init()
+
+        msg = {
+            'Text': name + ' hat einen Notfall! Adresse: ' + adresse,
+            'SMSC': {'Location': 1},
+            'Number': '' + nr
+        }
+
+        sm.SendSMS(msg)
