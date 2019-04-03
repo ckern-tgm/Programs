@@ -1,6 +1,7 @@
 #import gammu
 import psycopg2
 import re
+import os
 
 class Notfallsms(object):
 
@@ -59,4 +60,5 @@ if __name__ == '__main__':
     conn1 = psycopg2.connect("dbname=paul user=vinc password=vinc")
     n = Notfallsms(conn1)
     n.rewrite()
+    os.system('./notfall.sh')
     #n.sendNotfall()
