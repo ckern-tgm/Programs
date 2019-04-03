@@ -37,6 +37,7 @@ class Notfallsms(object):
         cur3.close()
 
     def rewrite(self):
+        self.getDaten()
         msg = self.Name + ' hat einen Notfall! Adresse: ' + self.Adresse
         with open('notfall.sh','w') as file:
             file.write('echo "'+msg+'" | sudo gammu sendsms TEXT '+self.Nummer)
