@@ -36,11 +36,13 @@ class Notfallsms(object):
         cur2.close()
         cur3.close()
 
-    def rewrite(self):
+    def sendNotfall(self):
         self.getDaten()
         msg = self.Name + ' hat einen Notfall! Adresse: ' + self.Adresse
         with open('notfall.sh','w') as file:
             file.write('echo "'+msg+'" | sudo gammu sendsms TEXT '+self.Nummer)
+
+        os.system('./notfall.sh')
 
     # def sendNotfall(self):
     #     self.getDaten()
@@ -61,5 +63,4 @@ if __name__ == '__main__':
     conn1 = psycopg2.connect("dbname=paul user=vinc password=vinc")
     n = Notfallsms(conn1)
     n.rewrite()
-    os.system('./notfall.sh')
     #n.sendNotfall()
