@@ -1,5 +1,6 @@
-import gammu
+#import gammu
 import psycopg2
+import re
 
 class Notfallsms(object):
 
@@ -34,22 +35,28 @@ class Notfallsms(object):
         cur2.close()
         cur3.close()
 
-    def sendNotfall(self):
-        self.getDaten()
-        sm = gammu.StateMachine()
-        sm.ReadConfig()
-        sm.Init()
+    def rewrite(self):
+        msg = self.Name + ' hat einen Notfall! Adresse: ' + self.Adresse
+        with open('notfall.sh','w') as file:
+            file.write('echo "'+msg+'" | sudo gammu sendsms TEXT '+self.Nummer)
 
-        msg = {
-            'Text': self.Name + ' hat einen Notfall! Adresse: ' + self.Adresse,
-            'SMSC': {'Location': 1},
-            'Number': '' + self.Nummer
-        }
-
-        sm.SendSMS(msg)
+    # def sendNotfall(self):
+    #     self.getDaten()
+    #     sm = gammu.StateMachine()
+    #     sm.ReadConfig()
+    #     sm.Init()
+    #
+    #     msg = {
+    #         'Text': self.Name + ' hat einen Notfall! Adresse: ' + self.Adresse,
+    #         'SMSC': {'Location': 1},
+    #         'Number': '' + self.Nummer
+    #     }
+    #
+    #     sm.SendSMS(msg)
 
 
 if __name__ == '__main__':
     conn1 = psycopg2.connect("dbname=paul user=vinc password=vinc")
     n = Notfallsms(conn1)
-    n.sendNotfall()
+    n.rewrite()
+    #n.sendNotfall()
