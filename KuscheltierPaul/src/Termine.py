@@ -11,8 +11,10 @@ Englisch = True
 
 class Termine(object):
 
+    # init speech engine
     engine = pyttsx3.init()
 
+    # set language drive depending on os
     if (platform.system() == 'Windows'):
         deutsch = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\eSpeak_3"
         engine.setProperty('rate', 100)
@@ -22,6 +24,7 @@ class Termine(object):
 
     englisch = "english"
 
+    # set english or german
     if (Englisch == True):
         engine.setProperty('voice', englisch)
     else:
@@ -31,6 +34,7 @@ class Termine(object):
 
 
     # global medikamente,uhrzeiten,anzahl,medikamenteAusgabe,uhrzeitenAusgabe,anzahlAusgabe
+    #4 times for all today, in 2 hours, in 24 hours, or to Announce
     termine = []
     uhrzeiten = []
     ort = []
@@ -54,6 +58,7 @@ class Termine(object):
     def __init__(self, conn):
         self.conn = conn
 
+    # method for getting all Termine of today
     def refreshTermineHeute(self):
         cur1 = self.conn.cursor()
         cur2 = self.conn.cursor()
@@ -109,10 +114,10 @@ class Termine(object):
         for row in row4:
             self.hinweis.append(row[0])
 
-
+        # add Termine into Ausgabe Arrays if time is now
         self.ListeZuAusgabeListe()
 
-
+    # gets all termine in 24 hours from now
     def refresh24(self):
         cur1 = self.conn.cursor()
         cur2 = self.conn.cursor()
@@ -166,7 +171,7 @@ class Termine(object):
         cur3.close()
         cur4.close()
 
-
+    # gets all Termine in 2 hours from now
     def refresh2(self):
         cur1 = self.conn.cursor()
         cur2 = self.conn.cursor()
@@ -220,21 +225,14 @@ class Termine(object):
         cur3.close()
         cur4.close()
 
-
-    def getTermineWrong(self):
-        return 0
-
-
-    def setTermine(self,termineNeu, uhrzeitenNeu, ortNeu, hinweisNeu):
-        return 0
-
-
+    # deletes all termine
     def deleteTermine(self,position):
         self.termine.pop(position)
         self.uhrzeiten.pop(position)
         self.ort.pop(position)
         self.hinweis.pop(position)
 
+    # announce all Termine for today
     def ausgabeTermineJetzt(self,index):
 
         if (index == 0):
@@ -293,7 +291,7 @@ class Termine(object):
         self.engine.say(self.hinweis[index])
         self.engine.runAndWait()
 
-
+    # announce Termine which are in 24 hours time
     def ausgabe24(self,index):
         if (Englisch == True):
             self.engine.say("Tomorrow at")
@@ -328,7 +326,7 @@ class Termine(object):
         self.engine.say(self.hinweis24[index])
         self.engine.runAndWait()
 
-
+    # announce termine which are in 2 hours time
     def ausgabe2(self,index):
         if (Englisch == True):
             self.engine.say("At")
@@ -363,7 +361,8 @@ class Termine(object):
         self.engine.say(self.hinweis2[index])
         self.engine.runAndWait()
 
-
+    # add Termine from class array to Ausgabe Array if they should be said right now
+    # same as medikamente
     def ListeZuAusgabeListe(self):
         global deleteIndexes
         deleteIndexes = []
@@ -386,6 +385,7 @@ class Termine(object):
         deleteIndexes = []
 
 
+    # announce all termine of today. Calling the functions as often as their are Termine
     def ausgabeAlleTermine(self):
         if len(self.termine)==0:
             print("Keine heutigen Termine")
@@ -399,28 +399,28 @@ class Termine(object):
             for i, val in enumerate(self.termine):
                 self.ausgabeTermineJetzt(i)
 
-
-
+    # announce all termine in 24 hours time. Calling the functions as often as their are Termine
     def ausgabeAlle24(self):
         for i, val in enumerate(self.termine24):
             self.ausgabe24(i)
 
-
+    # announce all termine in 2 hours of time. Calling the functions as often as their are Termine
     def ausgabeAlle2(self):
         for i, val in enumerate(self.termine2):
             self.ausgabe2(i)
 
-
-    def TermineMain(self):
+    # check if some Termine should be said.
+    #def TermineMain(self):
         # refreshTermine(conn1)
-        self.ListeZuAusgabeListe()
+        #self.ListeZuAusgabeListe()
         # refreshMedikamente()
         # print("Alle Termine" + str(termine))
         # print("Ausgabe Termine" + str(termineAusgabe))
         # print("|||||||||||||||||||||||||||||||||||||||||||||||||||||||")
-        if (len(self.termineAusgabe) > 0):
-            return 0
+        #if (len(self.termineAusgabe) > 0):
+            #return 0
 
+    # all termine in 2 or 24 hours time
     def getTermine(self):
         self.refresh2()
         self.ausgabeAlle2()
@@ -428,10 +428,12 @@ class Termine(object):
         self.refresh24()
         self.ausgabeAlle24()
 
+    # all termine today
     def getTermineHeute(self):
         self.refreshTermineHeute()
         self.ausgabeAlleTermine()
 
+# Testing purpose only
 if __name__ == "__main__":
     conn1 = psycopg2.connect("dbname=paul user=vinc password=vinc")
     t = Termine(conn1)

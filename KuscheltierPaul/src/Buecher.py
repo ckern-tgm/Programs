@@ -7,11 +7,13 @@ import time
 import keyboard
 import pyttsx3
 
+# path where all books are stored
 global Directory
 Directory = "/home/pi/Programs/KuscheltierPaul/books/Brueder_Grimm/"
 
 
 # name = ['Rotkaeppchen', 'Rapunzel', 'Froschkoenig', 'Aschenputtel', 'Gestiefelter_Kater', 'Bremer_Stadtmusikanten', 'Haensel_und_Gretel', 'Goldene_Gans', 'Wilhelm_Tell']
+# arrays which are used in this class
 name = []
 autor = []
 genre = []
@@ -28,6 +30,7 @@ Englisch = True
 
 class Buecher(object):
 
+    # set language drive depending on os
     if (platform.system() == 'Windows'):
         deutsch = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\eSpeak_3"
         engine.setProperty('rate', 100)
@@ -40,6 +43,7 @@ class Buecher(object):
 
     englisch = "english"
 
+    # set langauge german or english
     if (Englisch == True):
         engine.setProperty('voice', englisch)
     else:
@@ -53,6 +57,7 @@ class Buecher(object):
         self.conn = conn
         self.sensorwerte = sensorwerte
 
+    # this method gets all books which are checked on the website
     def selectBuch(self,conn):
         
         print(self.sensorwerte.rHand)
@@ -98,24 +103,29 @@ class Buecher(object):
         cur3.close()
         cur4.close()
 
+    # stop reading a mp3-File
     def stopLesen(self):
         pygame.mixer.music.pause()
 
+    # start the reading again
     def startLesenAgain(self):
         pygame.mixer.music.unpause()
 
-
+    # get the curent volume
     def getVolume(self):
         #print(pygame.mixer.music.get_volume())
         return pygame.mixer.music.get_volume()
 
+    # turn up the current volume
     def volumeUp(self):
         pygame.mixer.music.set_volume(self.getVolume()+0.1)
 
+    # turn down the current volume
     def volumeDown(self):
         pygame.mixer.music.set_volume(self.getVolume()-0.1)
 
-
+    # this method lets the mp3-File play until its over.
+    # it also checks if some buttons are hit for calling stop, etc.
     def busy(self,conn,index):
         print("in busy")
         cur1 = conn.cursor()
@@ -131,6 +141,7 @@ class Buecher(object):
 
         zeitSeitLetztemSignal = 1
         beginnZeitSeitLetztemSignal = 0
+        # while mp3 file is being played
         while pygame.mixer.music.get_busy() == True:
 
             #KeyboardSignalZeit
@@ -146,26 +157,32 @@ class Buecher(object):
             zeitSeitLetztemSignal = time.time() - beginnZeitSeitLetztemSignal
 
             print(elapsed_time)
+            # check if last button hit is > 1 sec. ago
+            # check for button hits and call actions
             if zeitSeitLetztemSignal>=1:
                 try:  # used try so that if user pressed other than the given key error will not be shown
+                    # Hit rechter fuss
                     if self.sensorwerte.rFuss == False:
                         print(self.getVolume())
                         print('Lauter')
                         self.volumeUp()
                         print(self.getVolume())
                         beginnZeitSeitLetztemSignal = time.time()
+                    # hit linker fuss
                     elif self.sensorwerte.lFuss == False:
                         print(self.getVolume())
                         print('Leiser')
                         self.volumeDown()
                         print(self.getVolume())
                         beginnZeitSeitLetztemSignal = time.time()
+                    # hit rechte hand
                     elif self.sensorwerte.rHand == False:
                         print('Pause')
                         pause_start = time.time()
                         pause = True
                         self.stopLesen()
                         beginnZeitSeitLetztemSignal = time.time()
+                    # hit linke hand
                     elif self.sensorwerte.lHand == False:
                         print("Lese wieder")
                         elapsed_pause_time = elapsed_pause_time + time.time() - pause_start
@@ -174,6 +191,7 @@ class Buecher(object):
                         warSchonPause = True
                         self.startLesenAgain()
                         beginnZeitSeitLetztemSignal = time.time()
+                    # hit abbrechen button
                     elif self.sensorwerte.abbr == False:
                         print('Escape')
                         pause_start = time.time()
@@ -181,6 +199,7 @@ class Buecher(object):
                         self.stopLesen()
                         beginnZeitSeitLetztemSignal = time.time()
 
+                        # commit the time it has played into the db to start reading from this position again
                         print(pausiert[index])
                         pausiert[index] = elapsed_time + pausiert[index]
                         print(pausiert[index])
@@ -195,6 +214,8 @@ class Buecher(object):
                     pass  # if user pressed a key other than the given key the loop will break
                 #schonGesendet=True
                 #continue
+
+        # commit the played time
         print(pausiert[index])
         pausiert[index] = elapsed_time + pausiert[index]
         print(pausiert[index])
@@ -202,6 +223,8 @@ class Buecher(object):
         cur1.execute(SQL_UPDATE_Time, data)
         conn.commit()
 
+    # this method calls the (next) song
+    # after 5 seconds or rechte Hand it asks for listening the next book
     def playSong(self,index):
         #pygame.mixer.music.load(Directory+name[index]+".mp3")
         #pygame.mixer.music.play(1,pausiert[index])
@@ -235,22 +258,26 @@ class Buecher(object):
                     print(str(time5))
                     print(str(time.time()))
                     print("In while")
+                    # ask next book
                     if self.sensorwerte.rHand == False:
                         print("rechte hand break")
                         #skip=True
                         break
+                    # play chosen book
                     elif self.sensorwerte.lHand == False:
                         print(Directory+name[x]+".mp3")
                         pygame.mixer.music.load(Directory + name[x] + ".mp3")
                         pygame.mixer.music.play(1, pausiert[x])
                         self.busy(self.conn, x)
                         #skip = False
+                    # get out of the reading function, back to the main class
                     elif self.sensorwerte.abbr == False:
                         abbr = True
                         break
 
                 #if skip:
                     #break
+        # after listinting to every possible book
         if abbr==False:
             if (Englisch == True):
                 engine.say("No books available. Please choose more books on the website.")
@@ -258,6 +285,7 @@ class Buecher(object):
                 engine.say("Keine Hörbücher mehr übrig. Bitte auf der Webseite neue Hörbücher auswählen.")
             engine.runAndWait()
         else:
+        # after getting out of the book function back to the main class
             abbr=False
             if (Englisch == True):
                 engine.say("Book listening has ended")
@@ -265,12 +293,15 @@ class Buecher(object):
                 engine.say("Hörbuch vorlesen wurde beendet.")
             engine.runAndWait()
 
+    # this method gets called from the main class
+    # it class the method for getting the books and playing them
     def getBuecher(self):
         print("Vor select Buch")
         self.selectBuch(self.conn)
         print("vor abspielen")
         self.playSong(0)
 
+# Testing purpose only
 if __name__ == "__main__":
     conn1 = psycopg2.connect("dbname=paul user=vinc password=vinc")
     sensorwerte = 1
